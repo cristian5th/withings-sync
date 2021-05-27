@@ -22,6 +22,11 @@ def get_args():
     def date_parser(s):
         return datetime.strptime(s, '%Y-%m-%d')
 
+    parser.add_argument('--withings-user', '--wu',
+                         default=os.environ.get('WITHINGS_USER'),
+                         type=str,
+                         metavar='WITHINGS_USER',
+                         help='user to login Withings.')
     parser.add_argument('--garmin-username', '--gu',
                         default=os.environ.get('GARMIN_USERNAME'),
                         type=str,
@@ -64,7 +69,8 @@ def get_args():
     return parser.parse_args()
 
 
-def sync(garmin_username, garmin_password,
+def sync(withings_user,
+         garmin_username, garmin_password,
          trainerroad_username, trainerroad_password,
          fromdate, todate,
          no_upload, verbose):
@@ -75,7 +81,10 @@ def sync(garmin_username, garmin_password,
                         stream=sys.stdout)
 
     # Withings API
-    withings = WithingsAccount()
+    if withings_user:
+         withings = WithingsAccount(withings_user)
+    else:
+         withings = WithingsAccount('user')
 
     startdate = int(time.mktime(fromdate.timetuple()))
     enddate = int(time.mktime(todate.timetuple())) + 86399
@@ -193,8 +202,4 @@ def sync(garmin_username, garmin_password,
 def main():
     args = get_args()
 
-    os.environ['WITHINGS_USER'] = '/volume1/python/withings-sync/withings_cristian.json'
-    sync(**vars(args))
-
-    os.environ['WITHINGS_USER'] = '/volume1/python/withings-sync/withings_steffi.json'
     sync(**vars(args))
