@@ -51,12 +51,11 @@ class WithingsConfig(Withings):
 class WithingsOAuth2(Withings):
     app_config = user_config = None
 
-    def __init__(self, withings_user):
+    def __init__(self):
         app_cfg = WithingsConfig(Withings.APP_CONFIG)
         self.app_config = app_cfg.config
 
-        # user_cfg = WithingsConfig(Withings.USER_CONFIG)
-        user_cfg = WithingsConfig('/volume1/python/withings-sync/withings_' + withings_user + '.json')
+        user_cfg = WithingsConfig(Withings.USER_CONFIG)
         self.user_config = user_cfg.config
 
         if not self.user_config.get('access_token'):
@@ -164,8 +163,8 @@ class WithingsOAuth2(Withings):
 
 
 class WithingsAccount(Withings):
-    def __init__(self, withings_user):
-        self.withings = WithingsOAuth2(withings_user)
+    def __init__(self):
+        self.withings = WithingsOAuth2()
 
     def getMeasurements(self, startdate, enddate):
         log.info('Get Measurements')
