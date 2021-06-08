@@ -5,6 +5,8 @@ A tool for synchronisation of Withings (ex. Nokia Health Body) to:
 - Garmin Connect
 - Trainer Road
 
+**NOTE: This version includes Withings multi user option. Each Withings user login configuration is stored in a different file.
+
 **NOTE: For Docker usage hits see at end of this document:** https://hub.docker.com/r/stv0g/withings-sync
 
 **NOTE: Included support for Withings OAuth2! See 'Obtaining Withings authorization'**
@@ -35,6 +37,8 @@ A tool for synchronisation of Withings (ex. Nokia Health Body) to Garmin Connect
 
 optional arguments:
   -h, --help            show this help message and exit
+  --withings-user WITHINGS_USER, --wu WITHINGS_USER
+                        user to login Withings.
   --garmin-username GARMIN_USERNAME, --gu GARMIN_USERNAME
                         username to login Garmin Connect.
   --garmin-password GARMIN_PASSWORD, --gp GARMIN_PASSWORD
@@ -49,7 +53,7 @@ optional arguments:
   --verbose, -v         Run verbosely
 ```
 
-### Providing crendtials via environment variables
+### Providing credentials via environment variables
 
 You can use the following environment variables for providing the Garmin and/or Trainerroad credentials:
 
