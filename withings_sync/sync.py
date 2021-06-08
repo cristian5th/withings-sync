@@ -6,6 +6,7 @@ import logging
 
 from datetime import date, datetime
 
+from withings_sync.withings2 import Withings
 from withings_sync.withings2 import WithingsAccount
 from withings_sync.garmin import GarminConnect
 from withings_sync.trainerroad import TrainerRoad
@@ -26,7 +27,8 @@ def get_args():
                          default=os.environ.get('WITHINGS_USER'),
                          type=str,
                          metavar='WITHINGS_USER',
-                         help='user to login Withings.')
+                         help='path to user json data file to login Withings.')
+
     parser.add_argument('--garmin-username', '--gu',
                         default=os.environ.get('GARMIN_USERNAME'),
                         type=str,
@@ -84,7 +86,7 @@ def sync(withings_user,
     if withings_user:
          withings = WithingsAccount(withings_user)
     else:
-         withings = WithingsAccount('user')
+         withings = WithingsAccount(Withings.USER_CONFIG)
 
     startdate = int(time.mktime(fromdate.timetuple()))
     enddate = int(time.mktime(todate.timetuple())) + 86399

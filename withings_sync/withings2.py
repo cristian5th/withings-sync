@@ -57,7 +57,7 @@ class WithingsOAuth2(Withings):
         self.app_config = app_cfg.config
 
         # user_cfg = WithingsConfig(Withings.USER_CONFIG)
-        user_cfg = WithingsConfig('/volume1/python/withings-sync/withings_' + withings_user + '.json')
+        user_cfg = WithingsConfig(withings_user)
         self.user_config = user_cfg.config
 
         if not self.user_config.get('access_token'):
