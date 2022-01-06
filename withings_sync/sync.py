@@ -53,7 +53,6 @@ def get_args():
 
     parser.add_argument('--fromdate', '-f',
                         type=date_parser,
-                        default=date.today(),
                         metavar='DATE')
     parser.add_argument('--todate', '-t',
                         type=date_parser,
@@ -88,8 +87,13 @@ def sync(withings_user,
     else:
          withings = WithingsAccount(Withings.USER_CONFIG)
 
-    startdate = int(time.mktime(fromdate.timetuple()))
+    if not fromdate:
+        startdate = withings.getLastSync()
+    else:
+        startdate = int(time.mktime(fromdate.timetuple()))
+
     enddate = int(time.mktime(todate.timetuple())) + 86399
+    logging.info("Fetching measurements from %s to %s", time.strftime('%Y-%m-%d %H:%M', time.gmtime(startdate)), time.strftime('%Y-%m-%d %H:%M', time.gmtime(enddate)))
 
     height = withings.getHeight()
 
@@ -196,6 +200,10 @@ def sync(withings_user,
         logging.debug('attempting to upload fit file...')
         r = garmin.upload_file(fit.getvalue(), session)
         if r:
+            # Save this sync so we don't re-download the same data again (if no range has been specified)
+            if not fromdate:
+                withings.setLastSync()
+
             logging.info('Fit file uploaded to Garmin Connect')
     else:
         logging.info('No Garmin username - skipping sync')
