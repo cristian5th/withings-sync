@@ -30,6 +30,7 @@ setup(
         'lxml',
         'requests',
         'cloudscraper'
+        'httpx[http2]'
     ],
     entry_points={
         'console_scripts': [
