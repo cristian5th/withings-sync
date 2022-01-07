@@ -157,6 +157,7 @@ class GarminConnect(object):
         for key, value in list(cookies.items()):
             log.debug(' %s = %s', key, value)
 
+
     def login(self, username, password):
 
         session = self._get_session(email=username, password=password)
